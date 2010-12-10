@@ -4,20 +4,20 @@ var dc;
 var defaultWidth = 2048;
 var defaultHeight = 2048;
 var center = { x: (defaultWidth /2), y:  (defaultHeight / 2)};
+var eggImage = new Image();
+eggImage.src = 'egg.png';
 
 function chicken() {
     return {
         pop: function() {
-            var img = new Image();
-            img.onload = function(){
-              dc.drawImage(img, center.x - 150, center.y - 150);
-              dc.beginPath();
-              dc.stroke();
-            }
-            img.src = 'egg.png';
+            dc.drawImage(eggImage, center.x - 150, center.y - 150);
+            dc.beginPath();
+            dc.stroke();
+            return chicken;
         },
         fry: function() {
             dc.clearRect(0, 0, defaultWidth, defaultHeight);
+            dc.stroke();
         }
     }
   }
