@@ -1,3 +1,4 @@
+var asNumber = '3333';
 var canvas;
 var dc;
 var defaultWidth = window.innerWidth - 20;
@@ -57,26 +58,65 @@ function distributeRRCs(x,y, radius, rrcs) {
   }
 }
 
+function distributeInners(displaydata, counts, x, y, radius) {
+
+  var numberCounts = Object.size(counts);
+  var processed = [];
+  for (var name in displaydata) { 
+    var level = displaydata[name];
+    if (!processed[level]) processed[level] = 0;
+
+    var distribution = processed[level] * (Math.PI * 2 / counts[level]);
+    processed[level]++;
+    var relativeX = Math.sin(distribution);
+    var relativeY = Math.cos(distribution);
+
+    var realX = relativeX * radius * level * (1 / numberCounts)  + x;
+    var realY = relativeY * radius * level * (1 / numberCounts)  + y;
+
+    drawCircle(realX, realY, 20, '#FFFF00');
+    addText(realX, realY, name);
+  }
+}
+
+function drawLine(xFrom, yFrom, xTo, yTo) {
+  dc.save();
+  dc.lineWidth = 3.0;
+  dc.lineCap = "round";
+  dc.moveTo(xFrom, yFrom);
+  dc.lineTo(xTo, yTo);
+  dc.stroke();
+  dc.restore();
+}
 function processRouteData(data) {
+
   distributeRRCs(defaultWidth / 2, defaultHeight / 2, 300, data);
   
-  
   var key2;
+  var displayData = {};
+  var asCounts = {};
   for (key2 in data) {
+    var paths = data[key2];
     var path;
-
-    //var paths = data[key];
-    //var displayData = {};
-    //var asCounts = {};
-    //for each (path in paths) {
-    //  var count = 0;
-    //  for each (as in path) {
-    //    count++;
-    //    if (!displayData[as]) {
-    //      displayData[as] = count;
-    //      asCounts[count] = asCounts[count] + 1;
-    //    } 
-    //  }
-    //}
+    for (index in paths) {
+      var count = 0;
+      path = paths[index];
+      var as;
+      for (var j=path.length - 2; j>=0; j--) {
+        as = path[j]
+        count++;
+        // TODO filter out duplicates in path
+        if (!displayData[as]) {
+          displayData[as] = count;
+          if (!asCounts[count]) {
+             asCounts[count] = 0;
+          }
+          asCounts[count] = asCounts[count] + 1;
+        }
+      }
+    }
   }
+  
+  distributeInners(displayData, asCounts, defaultWidth / 2, defaultHeight / 2, 300);
+
 }
