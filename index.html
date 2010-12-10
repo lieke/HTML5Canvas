@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+    <script src="jquery-1.4.4.min.js"></script>
+    <script src="canvas.js"></script>
+    <script src="jquery.json-2.2.js"></script>
+    <script src="json_processing.js"></script>
+    <link rel="stylesheet" href="style.css"></head><body>
+<canvas id="canvas" width="1024" height="768"></canvas>
+
+<script>
+$(document).ready(function() {
+   // put all your jQuery goodness in here.
+   initCanvas();
+   getRouteData('AS3333', processRouteData);
+
+
+   //drawCircle(100, 100, 50, "#FF0000");
+   //addText(100,100, "3333");
+
+
+   //var rrcs = ['3333', '1234', '4567', '4', '5', '6', '7', '8'];
+   //distributeRRCs(512,512,250, rrcs);
+});
+
+</script>
+</body></html>
