@@ -1,8 +1,10 @@
 var asNumber = '3333';
 var canvas;
 var dc;
-var defaultWidth = window.innerWidth - 20;
-var defaultHeight = window.innerHeight; - 25
+var defaultWidth = 2048;
+//var defaultWidth = window.innerWidth - 20;
+var defaultHeight = 2048;
+//var defaultHeight = window.innerHeight; - 25
 
 Object.size = function(obj) {
     var size = 0, key;
@@ -34,7 +36,7 @@ function drawCircle(x, y, radius, color) {
 
 function addText(x, y, text) {
   dc.save();
-  dc.font = "bold 14px sans-serif";
+  dc.font = "bold 6px sans-serif";
   dc.textAlign = "center";
   dc.textBaseline = "middle";
   dc.fillText(text, x, y)
@@ -56,6 +58,9 @@ function distributeRRCs(x,y, radius, rrcs) {
     drawCircle(realX, realY, 20, '#00FF00');
     addText(realX, realY, i);
   }
+
+  drawCircle(defaultHeight / 2, defaultWidth / 2, 30, '#FF0000');
+  addText(defaultHeight / 2, defaultWidth / 2, asNumber);
 }
 
 function distributeInners(displaydata, counts, x, y, radius) {
@@ -74,23 +79,24 @@ function distributeInners(displaydata, counts, x, y, radius) {
     var realX = relativeX * radius * level * (1 / numberCounts)  + x;
     var realY = relativeY * radius * level * (1 / numberCounts)  + y;
 
-    drawCircle(realX, realY, 20, '#FFFF00');
+    drawCircle(realX, realY, 10, '#FFFF00');
     addText(realX, realY, name);
   }
 }
 
 function drawLine(xFrom, yFrom, xTo, yTo) {
-  dc.save();
-  dc.lineWidth = 3.0;
-  dc.lineCap = "round";
-  dc.moveTo(xFrom, yFrom);
-  dc.lineTo(xTo, yTo);
-  dc.stroke();
-  dc.restore();
+  dc.save();
+  dc.lineWidth = 3.0;
+  dc.lineCap = "round";
+  dc.moveTo(xFrom, yFrom);
+  dc.lineTo(xTo, yTo);
+  dc.stroke();
+  dc.restore();
 }
+
 function processRouteData(data) {
 
-  distributeRRCs(defaultWidth / 2, defaultHeight / 2, 300, data);
+  distributeRRCs(defaultWidth / 2, defaultHeight / 2, defaultHeight / 2 - 20, data);
   
   var key2;
   var displayData = {};
@@ -117,6 +123,6 @@ function processRouteData(data) {
     }
   }
   
-  distributeInners(displayData, asCounts, defaultWidth / 2, defaultHeight / 2, 300);
+  distributeInners(displayData, asCounts, defaultWidth / 2, defaultHeight / 2, defaultHeight / 2 - 20);
 
 }
