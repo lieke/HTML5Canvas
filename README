@@ -1,0 +1,26 @@
+
+
+ONE Source per origin, and one source to bind them...
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+
+	DocumentRoot /home/bram/program/websocket/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /home/bram/probram/websocket/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+    ProxyPass /remote http://10.0.0.128:61080
+    ProxyPassReverse /jira http://10.0.0.128:61080 
+    <Location /remote>
+        Order allow,deny
+        Allow from all
+    </Location>    
+
+</VirtualHost>
+

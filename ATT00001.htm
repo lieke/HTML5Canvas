@@ -1,0 +1,348 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+</head>
+<body style="">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">In this image, AS55 is the one we are interested in. The large red circles on the edge are the RIPE data collectors and the numbers in the middle are all the AS that provide transit for traffic from the collector points to
+ AS55.</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">Nice to haves here:</span></div>
+<ul>
+<li style="margin:0.0px 0.0px 0.0px 0.0px; font:12.0px Helvetica"><span style="letter-spacing:0.0px">Animate the image so you can see it change over time</span>
+</li><li style="margin:0.0px 0.0px 0.0px 0.0px; font:12.0px Helvetica"><span style="letter-spacing:0.0px">See somewhere which networks are hosted by AS55.</span>
+</li><li style="margin:0.0px 0.0px 0.0px 0.0px; font:12.0px Helvetica"><span style="letter-spacing:0.0px">Mouse over a data collector:</span>
+<ul>
+<li style="margin:0.0px 0.0px 0.0px 0.0px; font:12.0px Helvetica"><span style="letter-spacing:0.0px">highlights all routes that were seen from that point.</span>
+</li><li style="margin:0.0px 0.0px 0.0px 0.0px; font:12.0px Helvetica"><span style="letter-spacing:0.0px">see a list of networks that are hosted by AS55 but are not announced to that data collector (so you can see outages)</span>
+</li></ul>
+</li></ul>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">The circular layout is an option, but perhaps there is a better (or easier) way.</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px"><b>The Data</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">The idea is to create the visualization / UI completely in HTML5 / JavaScript. Luckily, at RIPE, there is a server that will give the data required for this diagram in JSON. I will provide access to that server through a state-of-the-art
+ network facility called a SSH tunnel.</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">The server is quite easy: you POST a query in JSON format in the request body and you get results back in JSON format. The query syntax is a bit involved, but here is the query that you will need:</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal Courier; min-height:12px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp;{</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &quot;select&quot;: [&quot;META_DATA&quot;, &quot;BLOB&quot;, &quot;TIMELINE&quot;],</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &quot;data_class&quot;: &quot;RIS_RIB&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &quot;where&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &quot;composite&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;primary&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;time_index&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;from&quot;: &quot;18:38:26.58 08-12-2010&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;to&quot;: &quot;18:38:26.58 09-12-2010&quot;</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;secondary&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;asn&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;match&quot;: &quot;EXACT&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;exact_match&quot;: &quot;INCLUDE_EXACT&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;position&quot;: 0,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;direction&quot;: &quot;FROM_RIGHT&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;resource&quot;: &quot;AS3333&quot;</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; },</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &quot;and&quot;: [],</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &quot;time_criterion&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &quot;between&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;minimum_start_time&quot;: &quot;18:38:26.58 08-12-2010&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maximum_end_time&quot;: &quot;18:38:26.58 09-12-2010&quot;</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; },</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &quot;combine_timeline&quot;: true</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">}</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal Courier; min-height:12px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">The important parts are bold again. You need to pass in the start and end date twice (it’s an open issue, so for now we’ll call it a feature) and the AS number that you are looking for (AS3333 belongs to RIPE NCC itself).
+ This query will ask for all the records in a given time frame where AS3333 is the rightmost AS number in the AS path (hence, it will give only records for networks which are hosted by AS3333).</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">What you get as result is this:</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">{</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &quot;records&quot;: [{</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &quot;data_class&quot;: &quot;RIS_RIB&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &quot;data_source&quot;: &quot;rrc00&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &quot;intervals&quot;: [{</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;start&quot;: 1291852802000,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;end&quot;: 1291881602000</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; }]</b>,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &quot;blob&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot;: &quot;TABLE_DUMP&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;peer_ip&quot;: &quot;195.47.235.100&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;peer_as&quot;: 6881,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;prefix&quot;: &quot;193.0.10.0/23&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;as_path&quot;: &quot;6881 29208 3333&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;next_hop&quot;: &quot;195.47.235.100&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;local_preference&quot;: 0,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;multi_exit_discriminator&quot;: 0,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;atomic_aggregate&quot;: false,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;communities&quot;: []</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; },</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &quot;data_class&quot;: &quot;RIS_RIB&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &quot;data_source&quot;: &quot;rrc00&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &quot;intervals&quot;: [{</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;start&quot;: 1291852802000,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;end&quot;: 1291881602000</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; }]</b>,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &quot;blob&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot;: &quot;TABLE_DUMP&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;peer_ip&quot;: &quot;12.0.1.63&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;peer_as&quot;: 7018,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;prefix&quot;: &quot;193.0.0.0/21&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;as_path&quot;: &quot;7018 3356 3333&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;next_hop&quot;: &quot;12.0.1.63&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;local_preference&quot;: 0,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;multi_exit_discriminator&quot;: 0,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;atomic_aggregate&quot;: false,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;communities&quot;: [&quot;7018:5000&quot;]</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; },</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &quot;data_class&quot;: &quot;RIS_RIB&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &quot;data_source&quot;: &quot;rrc00&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &quot;intervals&quot;: [{</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;start&quot;: 1291852802000,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;end&quot;: 1291881602000</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; }]</b>,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &quot;blob&quot;: {</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot;: &quot;TABLE_DUMP&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;peer_ip&quot;: &quot;12.0.1.63&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;peer_as&quot;: 7018,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;prefix&quot;: &quot;193.0.10.0/23&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px"><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;as_path&quot;: &quot;7018 3356 3333&quot;,</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;next_hop&quot;: &quot;12.0.1.63&quot;,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;local_preference&quot;: 0,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;multi_exit_discriminator&quot;: 0,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;atomic_aggregate&quot;: false,</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;communities&quot;: [&quot;7018:5000&quot;]</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &nbsp; &nbsp; }</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; }],</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">&nbsp; &nbsp; &quot;record_count&quot;: 3</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal 'Courier New'">
+<span style="letter-spacing:0.0px">}</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 10px/normal Courier; min-height:12px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">Some explanation:</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<br>
+</div>
+<table cellspacing="0" cellpadding="0" style="background-color:#ffffff; border-collapse:collapse">
+<tbody>
+<tr>
+<td valign="top" style="width:149.2px; height:14.0px; background-color:#bec0bf; border-style:solid; border-width:1.0px 1.0px 1.0px 1.0px; border-color:#000000 #000000 #000000 #000000; padding:5.0px 5.0px 5.0px 5.0px">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; text-align:center; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px"><b>attribute</b></span></div>
+</td>
+<td valign="top" style="width:307.2px; height:14.0px; background-color:#bec0bf; border-style:solid; border-width:1.0px 1.0px 1.0px 1.0px; border-color:#000000 #000000 #000000 #000000; padding:5.0px 5.0px 5.0px 5.0px">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; text-align:center; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px"><b>what is it</b></span></div>
+</td>
+</tr>
+<tr>
+<td valign="top" style="width:149.2px; height:42.0px; border-style:solid; border-width:1.0px 1.0px 1.0px 1.0px; border-color:#000000 #000000 #000000 #000000; padding:5.0px 5.0px 5.0px 5.0px">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">data_source</span></div>
+</td>
+<td valign="top" style="width:307.2px; height:42.0px; border-style:solid; border-width:1.0px 1.0px 1.0px 1.0px; border-color:#000000 #000000 #000000 #000000; padding:5.0px 5.0px 5.0px 5.0px">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">The name of the data collection point. There are 17 of these, named rrc00 to rrc16. Some of them don’t work (I think 2, 7 and 8), so you will never see data for those.</span></div>
+</td>
+</tr>
+<tr>
+<td valign="top" style="width:149.2px; height:126.0px; border-style:solid; border-width:1.0px 1.0px 1.0px 1.0px; border-color:#000000 #000000 #000000 #000000; padding:5.0px 5.0px 5.0px 5.0px">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">intervals</span></div>
+</td>
+<td valign="top" style="width:307.2px; height:126.0px; border-style:solid; border-width:1.0px 1.0px 1.0px 1.0px; border-color:#000000 #000000 #000000 #000000; padding:5.0px 5.0px 5.0px 5.0px">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">Series of time intervals denoted by a start and stop time in millis since epoch. The data of the record is said to be true during the given intervals. So in the las record, rrc00 was receiving announcements for 193.0.10.0/23
+ during the given interval. If you query for a short period of time, you will usually only see one interval for each record, but there could be more. Intervals will never overlap or be directly adjacent (two intervals for the same record with no time in between
+ will be combined on the server side).</span></div>
+</td>
+</tr>
+<tr>
+<td valign="top" style="width:149.2px; height:70.0px; border-style:solid; border-width:1.0px 1.0px 1.0px 1.0px; border-color:#000000 #000000 #000000 #000000; padding:5.0px 5.0px 5.0px 5.0px">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">prefix</span></div>
+</td>
+<td valign="top" style="width:307.2px; height:70.0px; border-style:solid; border-width:1.0px 1.0px 1.0px 1.0px; border-color:#000000 #000000 #000000 #000000; padding:5.0px 5.0px 5.0px 5.0px">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">The network that can be reached through the announced route. So everything within 193.0.10.0/23 is hosted by AS333 and can be reached from rrc00 through 2 different AS paths (look at the first and the last record in this result).</span></div>
+</td>
+</tr>
+<tr>
+<td valign="top" style="width:149.2px; height:112.0px; border-style:solid; border-width:1.0px 1.0px 1.0px 1.0px; border-color:#000000 #000000 #000000 #000000; padding:5.0px 5.0px 5.0px 5.0px">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">as_path</span></div>
+</td>
+<td valign="top" style="width:307.2px; height:112.0px; border-style:solid; border-width:1.0px 1.0px 1.0px 1.0px; border-color:#000000 #000000 #000000 #000000; padding:5.0px 5.0px 5.0px 5.0px">
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">The path of AS involved in the route. You should expect duplicates here as well as AS paths which have the same AS in them a number of times (e.g. 1234 5678 5678 5678 5678 3333 is valid). The people running the internet apply
+ strange hacks all the time. The AS paths with the same number repeated a couple of times is used to make a route less favorable by making it artificially longer, such that routers will not give it priority.</span></div>
+</td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">In reality you should expect more than just 3 records. If you actually do the query above, you will get 688 records in 250K of JSON, which is one day worth of data.</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">To use the server, you need to post to this URL: http://&lt;hostname&gt;:61080/inrdb/query. I don’t know the hostname yet, but I will set it up somewhere and communicate that. It will probably be my laptop with a tunnel to the actual
+ machine at RIPE. Because things will go through a tunnel and probably over WiFi, it might not be as snappy as you’d like. The above query took about 1.5 seconds in such a setup. Also, some data is really rarely requested so caches will be cold and the database
+ needs to do a lookup amongst quite a substantial amount of this data, so the first time you do a query it could take seconds before it responds. The next time you do the same query will then come from cache and be fast.</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px"><b>The WebSocket Bonus</b></span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">If you want to make the diagram animate over time, you will need more data than just a snapshot. As mentioned above, the data is about 250K per day, so drawing a month or scrolling through years is not really an option. In
+ order to make this possible, you could write a server side component to do the queries for you and push the results to the client as they arrive. You could even strip the results of the unwanted fields. The client should be able to request different time windows
+ through the same channel.</span></div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica; min-height:14px">
+<span style="letter-spacing:0.0px"></span><br>
+</div>
+<div style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; font:normal normal normal 12px/normal Helvetica">
+<span style="letter-spacing:0.0px">If you like the WebSocket bonus more than the visualization part, you can of course opt to start with that and just display the data textually or some other less complex way.</span></div>
+<div><span style="letter-spacing:0.0px"><br>
+</span></div>
+</body>
+</html>
