@@ -1,7 +1,8 @@
+var asNumber = '3333';
 var canvas;
 var dc;
-var defaultWidth = window.innerWidth - 20;
-var defaultHeight = window.innerHeight; - 25
+var defaultWidth = 2048;
+var defaultHeight = 2048;
 var center = { x: (defaultWidth /2), y:  (defaultHeight / 2)};
 
 function chicken() {
@@ -51,7 +52,7 @@ function drawCircle(x, y, radius, color) {
 
 function addText(x, y, text) {
   dc.save();
-  dc.font = "bold 14px sans-serif";
+  dc.font = "bold 6px sans-serif";
   dc.textAlign = "center";
   dc.textBaseline = "middle";
   dc.fillText(text, x, y)
@@ -73,28 +74,71 @@ function distributeRRCs(x,y, radius, rrcs) {
     drawCircle(realX, realY, 20, '#00FF00');
     addText(realX, realY, i);
   }
+
+  drawCircle(defaultHeight / 2, defaultWidth / 2, 30, '#FF0000');
+  addText(defaultHeight / 2, defaultWidth / 2, asNumber);
+}
+
+function distributeInners(displaydata, counts, x, y, radius) {
+
+  var numberCounts = Object.size(counts);
+  var processed = [];
+  for (var name in displaydata) { 
+    var level = displaydata[name];
+    if (!processed[level]) processed[level] = 0;
+
+    var distribution = processed[level] * (Math.PI * 2 / counts[level]);
+    processed[level]++;
+    var relativeX = Math.sin(distribution);
+    var relativeY = Math.cos(distribution);
+
+    var realX = relativeX * radius * level * (1 / numberCounts)  + x;
+    var realY = relativeY * radius * level * (1 / numberCounts)  + y;
+
+    drawCircle(realX, realY, 10, '#FFFF00');
+    addText(realX, realY, name);
+  }
+}
+
+function drawLine(xFrom, yFrom, xTo, yTo) {
+  dc.save();
+  dc.lineWidth = 3.0;
+  dc.lineCap = "round";
+  dc.moveTo(xFrom, yFrom);
+  dc.lineTo(xTo, yTo);
+  dc.stroke();
+  dc.restore();
 }
 
 function processRouteData(data) {
-  distributeRRCs(defaultWidth / 2, defaultHeight / 2, 300, data);
-  
+
+  distributeRRCs(defaultWidth / 2, defaultHeight / 2, defaultHeight / 2 - 20, data);
   
   var key2;
+  var displayData = {};
+  var asCounts = {};
   for (key2 in data) {
+    var paths = data[key2];
     var path;
-
-    //var paths = data[key];
-    //var displayData = {};
-    //var asCounts = {};
-    //for each (path in paths) {
-    //  var count = 0;
-    //  for each (as in path) {
-    //    count++;
-    //    if (!displayData[as]) {
-    //      displayData[as] = count;
-    //      asCounts[count] = asCounts[count] + 1;
-    //    } 
-    //  }
-    //}
+    for (index in paths) {
+      var count = 0;
+      path = paths[index];
+      var as;
+      for (var j=path.length - 2; j>=0; j--) {
+        as = path[j]
+        count++;
+        // TODO filter out duplicates in path
+        if (!displayData[as]) {
+          displayData[as] = count;
+          if (!asCounts[count]) {
+             asCounts[count] = 0;
+          }
+          asCounts[count] = asCounts[count] + 1;
+        }
+      }
+    }
   }
+  
+  distributeInners(displayData, asCounts, defaultWidth / 2, defaultHeight / 2, defaultHeight / 2 - 20);
+
 }
