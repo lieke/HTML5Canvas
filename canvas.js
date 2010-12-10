@@ -3,6 +3,15 @@ var dc;
 var defaultWidth = window.innerWidth - 20;
 var defaultHeight = window.innerHeight; - 25
 
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
+
 function initCanvas() {
   canvas = document.getElementById("canvas");
   canvas.width = defaultWidth;
@@ -32,7 +41,8 @@ function addText(x, y, text) {
 }
 
 function distributeRRCs(x,y, radius, rrcs) {
-  var numberOfRrcs = rrcs.length;
+
+  var numberOfRrcs = Object.size(rrcs);
   for (var i=0; i<numberOfRrcs; i++) {
 
     var distribution = i * (Math.PI * 2 / numberOfRrcs);
@@ -43,10 +53,30 @@ function distributeRRCs(x,y, radius, rrcs) {
     var realY = relativeY * radius + y;
 
     drawCircle(realX, realY, 20, '#00FF00');
-    addText(realX, realY, rrcs[i]);
+    addText(realX, realY, i);
   }
 }
 
-processRouteData(data) {
+function processRouteData(data) {
+  distributeRRCs(defaultWidth / 2, defaultHeight / 2, 300, data);
+  
+  
+  var key2;
+  for (key2 in data) {
+    var path;
 
+    //var paths = data[key];
+    //var displayData = {};
+    //var asCounts = {};
+    //for each (path in paths) {
+    //  var count = 0;
+    //  for each (as in path) {
+    //    count++;
+    //    if (!displayData[as]) {
+    //      displayData[as] = count;
+    //      asCounts[count] = asCounts[count] + 1;
+    //    } 
+    //  }
+    //}
+  }
 }
