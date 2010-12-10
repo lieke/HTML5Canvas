@@ -43,8 +43,9 @@ function generatePathHandler(callBack)
     return function generatePath(data) {
         //Process data
         var rrcs = {};
-        for each(record in data.records)
+        for (var recordKey in data.records)
         {
+            var record = data.records[recordKey];
             if(!(record.data_source in rrcs))
                 rrcs[record.data_source] = {};
             rrcs[record.data_source][record.blob.as_path] = 1;
