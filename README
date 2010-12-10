@@ -4,23 +4,22 @@ ONE Source per origin, and one source to bind them...
 <VirtualHost *:80>
 	ServerAdmin webmaster@localhost
 
-	DocumentRoot /home/bram/program/websocket/www
+	DocumentRoot /home/bram/program/HTML5Canvas
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
-	<Directory /home/bram/probram/websocket/www/>
+	<Directory /home/bram/probram/HTML5Canvas>
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny
 		allow from all
 	</Directory>
     ProxyPass /remote http://10.0.0.128:61080
-    ProxyPassReverse /jira http://10.0.0.128:61080 
+    ProxyPassReverse /remote http://10.0.0.128:61080 
     <Location /remote>
         Order allow,deny
         Allow from all
     </Location>    
 
 </VirtualHost>
-
