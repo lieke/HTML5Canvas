@@ -56,7 +56,7 @@ function generatePathHandler(callBack)
             for(uglyuglyugly in rrcs[r])
                 rrcs[r][uglyuglyugly] = rrcs[r][uglyuglyugly].split(' ');
         }
-        return callBack(jQuery.toJSON(rrcs));
+        return callBack(rrcs);
     }
 }
 function getRouteData(asNumber, callBack)
