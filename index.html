@@ -8,14 +8,18 @@
     <script src="jquery.json-2.2.js"></script>
     <script src="json_processing.js"></script>
     <link rel="stylesheet" href="style.css"></head><body>
+<p style="padding: 0; indent: 0; margin: 0">
+<form id="search"><input type="test" id="q" value="fake"/></form>
 <canvas id="canvas" width="1024" height="768"></canvas>
-
+</p>
 <script>
 $(document).ready(function() {
    // put all your jQuery goodness in here.
    initCanvas();
    getRouteData('fake', processRouteData);
 
+   $('#search').submit(function (input) {
+        getRouteData($('#q').val(), processRouteData); });
 
    //drawCircle(100, 100, 50, "#FF0000");
    //addText(100,100, "3333");
