@@ -2,6 +2,24 @@ var canvas;
 var dc;
 var defaultWidth = window.innerWidth - 20;
 var defaultHeight = window.innerHeight; - 25
+var center = { x: (defaultWidth /2), y:  (defaultHeight / 2)};
+
+function chicken() {
+    return {
+        pop: function() {
+            var img = new Image();
+            img.onload = function(){
+              dc.drawImage(img, center.x - 150, center.y - 150);
+              dc.beginPath();
+              dc.stroke();
+            }
+            img.src = 'egg.png';
+        },
+        fry: function() {
+            dc.clearRect(center.x - 150, center.y - 150, 300, 300);
+        }
+    }
+  }
 
 Object.size = function(obj) {
     var size = 0, key;
