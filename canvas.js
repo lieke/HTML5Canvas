@@ -17,7 +17,7 @@ function chicken() {
             img.src = 'egg.png';
         },
         fry: function() {
-            dc.clearRect(center.x - 150, center.y - 150, 300, 300);
+            dc.clearRect(0, 0, defaultWidth, defaultHeight);
         }
     }
   }
