@@ -19,7 +19,7 @@ $(document).ready(function() {
    getRouteData('fake', processRouteData);
 
    $('#search').submit(function (input) {
-        getRouteData($('#q').val(), processRouteData); });
+        getRouteData($('#q').val(), processRouteData); return false;});
 
    //drawCircle(100, 100, 50, "#FF0000");
    //addText(100,100, "3333");
